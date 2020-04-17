@@ -127,7 +127,7 @@ export default class AutoNumericHelper {
      * @returns {boolean}
      */
     static isEmptyObj(obj) {
-        for (const prop in obj) {
+        for (let prop in obj) {
             if (Object.prototype.hasOwnProperty.call(obj, prop)) {
                 return false;
             }

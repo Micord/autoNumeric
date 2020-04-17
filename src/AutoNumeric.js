@@ -4836,7 +4836,7 @@ To solve that, you'd need to either set \`decimalPlacesRawValue\` to \`null\`, o
      */
     _runCallbacksFoundInTheSettingsObject() { //FIXME test this
         // Loops through the this.settings object (option array) to find the following
-        for (const key in this.settings) {
+        for (let key in this.settings) {
             if (Object.prototype.hasOwnProperty.call(this.settings, key)) {
                 const value = this.settings[key];
 
@@ -7948,7 +7948,7 @@ To solve that, you'd need to either set \`decimalPlacesRawValue\` to \`null\`, o
      * Modify the user settings to make them 'exploitable' later.
      */
     _transformOptionsValuesToDefaultTypes() {
-        for (const key in this.settings) {
+        for (let key in this.settings) {
             if (Object.prototype.hasOwnProperty.call(this.settings, key)) {
                 const value = this.settings[key];
 
@@ -8074,7 +8074,7 @@ To solve that, you'd need to either set \`decimalPlacesRawValue\` to \`null\`, o
             stripReg                          : true,
         };
 
-        for (const option in options) {
+        for (let option in options) {
             if (Object.prototype.hasOwnProperty.call(options, option)) {
                 if (oldOptionsConverter[option] === true) {
                     // If the option is a 'new' option, we continue looping
