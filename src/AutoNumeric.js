@@ -6015,7 +6015,12 @@ To solve that, you'd need to either set \`decimalPlacesRawValue\` to \`null\`, o
      * @private
      */
     static _isMinimumRangeRespected(value, settings) {
-        return AutoNumericHelper.testMinMax(AutoNumericHelper.parseStr(settings.minimumValue), this._cleanValueForRangeParse(value)) > -1;
+        return AutoNumericHelper.isUndefinedOrNullOrEmpty(value)
+            ? true
+            : AutoNumericHelper.testMinMax(
+                AutoNumericHelper.parseStr(settings.minimumValue),
+                this._cleanValueForRangeParse(value),
+            ) > -1;
     }
 
     /**
@@ -6027,7 +6032,12 @@ To solve that, you'd need to either set \`decimalPlacesRawValue\` to \`null\`, o
      * @private
      */
     static _isMaximumRangeRespected(value, settings) {
-        return AutoNumericHelper.testMinMax(AutoNumericHelper.parseStr(settings.maximumValue), this._cleanValueForRangeParse(value)) < 1;
+        return AutoNumericHelper.isUndefinedOrNullOrEmpty(value)
+            ? true
+            : AutoNumericHelper.testMinMax(
+                AutoNumericHelper.parseStr(settings.maximumValue),
+                this._cleanValueForRangeParse(value),
+            ) < 1;
     }
 
     /**
@@ -7325,7 +7335,7 @@ To solve that, you'd need to either set \`decimalPlacesRawValue\` to \`null\`, o
          *      - Truncate paste behavior.
          *      - Try to set the new value, until it fails (if the result is out of the min and max value limits).
          *      - Drop the remaining non-pasted numbers, and keep the last known non-failing result.
-         *      - Change the caret position to be positioned after the last pasted character.
+         *      - Change the caret position to be positioned after the last pasted charracter.
          * If 'replace' :
          *      - Replace paste behavior.
          *      - Try to set the new value, until it fails (if the result is out of the min and max value limits).
@@ -7522,7 +7532,9 @@ To solve that, you'd need to either set \`decimalPlacesRawValue\` to \`null\`, o
 
         // 3) Set the new value so it gets formatted
         // First clamp the result if needed
-        result = AutoNumericHelper.clampToRangeLimits(result, this.settings);
+        if (this.settings.overrideMinMaxLimits !== AutoNumeric.options.overrideMinMaxLimits.invalid) {
+            result = AutoNumericHelper.clampToRangeLimits(result, this.settings);
+        }
         if (result !== +currentUnformattedValue) {
             // Only 'set' the value if it has changed. For instance 'set' should not happen if the user hits a limit and continue to try to go past it since we clamp the value.
             this.set(result);
@@ -8334,8 +8346,14 @@ To solve that, you'd need to either set \`decimalPlacesRawValue\` to \`null\`, o
      * @private
      */
     static _setNegativePositiveSignPermissions(settings) {
-        settings.isNegativeSignAllowed = settings.minimumValue < 0;
-        settings.isPositiveSignAllowed = settings.maximumValue >= 0;
+        if (settings.overrideMinMaxLimits === AutoNumeric.options.overrideMinMaxLimits.invalid) {
+            settings.isNegativeSignAllowed = true;
+            settings.isPositiveSignAllowed = true;
+        }
+        else {
+            settings.isNegativeSignAllowed = settings.minimumValue < 0;
+            settings.isPositiveSignAllowed = settings.maximumValue >= 0;
+        }
     }
 
     /**
