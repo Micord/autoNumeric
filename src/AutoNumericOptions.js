@@ -386,6 +386,7 @@ AutoNumeric.options = {
      * - this value needs to be larger than `minimumValue`
      */
     maximumValue: {
+        oneDecillion          : '1000000000000000000000000000000000',
         tenTrillions          : '10000000000000', // 10000 billions
         oneBillion            : '1000000000',
         zero                  : '0',
@@ -398,6 +399,7 @@ AutoNumeric.options = {
      * - if this is superior to 0, then you'll effectively prevent your user to entirely delete the content of your element
      */
     minimumValue: {
+        oneDecillion          : '-1000000000000000000000000000000000',
         tenTrillions          : '-10000000000000', // 10000 billions
         oneBillion            : '-1000000000',
         zero                  : '0',
